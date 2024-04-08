@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Register</title>
+        <link rel="stylesheet" href="../styles.css" />
+    </head>
+    <body>
+        <div>
+            <h1>Register</h1>
+            <form id="registerForm">
+                <div>
+                    <label for="email">Email</label>
+                    <input autocomplete="on" type="email" id="email" />
+                    <label for="password">Password</label>
+                    <input autocomplete="on" type="password" id="password" />
+                    <label for="cpassword">Confirm Password</label>
+                    <input autocomplete="on" type="password" id="cpassword" />
+                    <button type="submit">Register</button>
+                </div>
+            </form>
+            <div>
+                <p>already have an account</p>
+                <button id="loginButton" type="button">Login</button>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script type="module" src="../../firebaseconfig.js"></script>
+        <script type="module" src="register.js"></script>
+        
+    </body>
+</html>
+
+<!-- todo 1. Create login page.  -->
+<!-- todo 2. Create register page.  -->
+<!-- todo 3. Implement firebase auth.  -->
+<!-- todo 4. check for functionality.  -->
