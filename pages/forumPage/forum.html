@@ -4,15 +4,43 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Forum</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+        <link rel="stylesheet" href="forum.css">
     </head>
     <body>
-        <h1>Welcome to the Forum</h1>
+        <div class="overlay"></div>
+        <div class="main-container">
+            <h1 class="context">Welcome to the Forum</h1>
+            <div>
+                <p class="context">Here you can write your posts.</p>
+                <form class="pure-form">
+                    <textarea class="pure-input" name="newPostInput" id="newPostInput"></textarea>
+                    <button id="newPostButton" class="pure-button" type="submit">
+                        Submit Post
+                    </button>
+                </form>
+            </div>
+            
+            <div class="text-container">
+                <h5>Käyttäjä</h5>
+                <p>VViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näinViesti kirjoitetaan äthän jotaenkuinkin näiniesti kirjoitetaan äthän jotaenkuinkin näin</p>
+                <button class="replyButton" id="replyButton" type="button">Reply</button>
+            </div>
+
+        </div>
 
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
         <script type="module" src="../../firebaseconfig.js"></script>
         <script type="module" src="forum.js"></script>
 
     </body>
 </html>
+
+<!-- MARK: Todo-->
+<!-- todo add error state handling for login and register -->
+<!-- todo create styling for login and register -->
+<!-- todo research possible solutions for popups with jquery -->
+<!-- todo start work on forum page -->

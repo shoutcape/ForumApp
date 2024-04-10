@@ -4,12 +4,13 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Register</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
         <link rel="stylesheet" href="../styles.css" />
     </head>
     <body>
-        <div>
-            <h1>Register</h1>
-            <form id="registerForm">
+        <div class="pure-container">
+            <form class="pure-form pure-form-stacked" id="registerForm">
+                <h1>Register</h1>
                 <div>
                     <label for="email">Email</label>
                     <input autocomplete="on" type="email" id="email" />
@@ -17,13 +18,12 @@
                     <input autocomplete="on" type="password" id="password" />
                     <label for="cpassword">Confirm Password</label>
                     <input autocomplete="on" type="password" id="cpassword" />
-                    <button type="submit">Register</button>
+                    <button class="pure-button" type="submit">Register</button>
                 </div>
+                    <p>Already have an account?
+                        <a id="loginLink">Login</a>
+                    </p>
             </form>
-            <div>
-                <p>already have an account</p>
-                <button id="loginButton" type="button">Login</button>
-            </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
