@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Perkele</h1>
-    
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+        <link rel="stylesheet" href="./styles.css" />
+    </head>
+    <body>
+        <div class="pure-container">
+            <form class="pure-form pure-form-stacked" id="loginForm">
+                <h1>Login</h1>
+                <div>
+                    <label for="email">Email</label>
+                    <input autocomplete="username" type="email" id="email" />
+                    <label for="password">Password</label>
+                    <input autocomplete="current-password" type="password" id="password" />
+                    <button class="pure-button" type="submit">Login</button>
+                    <p>Don't have an account?
+                        <a id="registerLink">Register</a>
+                    </p>
+                </div>
+                </form>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-app-compat.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/10.10.0/firebase-auth-compat.js"></script>
+            <script type="module" src="../../firebaseconfig.js"></script>
+            <script type="module" src="main.js"></script>
+        </div>
+    </body>
 </html>
+
+<!-- todo 1. Create login page.  -->
+<!-- todo 2. Create register page.  -->
+<!-- todo 3. Implement firebase auth.  -->
+<!-- todo 4. check for functionality.  -->

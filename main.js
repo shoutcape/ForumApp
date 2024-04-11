@@ -16,7 +16,7 @@ loginForm.on('submit', function (e) {
 });
 
 registerLink.on('click', async function () {
-    changePage('../registerPage/register.html')
+    changePage('./pages/registerPage/register.html')
 });
 
 async function authenticateLogin(email, password) {
@@ -25,7 +25,7 @@ async function authenticateLogin(email, password) {
         .signInWithEmailAndPassword(email, password)
         .then(async () => {
             showNotification('Login Successful', 2000)
-            changePage('../forumPage/forum.html', 1000)
+            changePage('./pages/forumPage/forum.html', 1000)
         })
         .catch((error) => {
             let message = error.message

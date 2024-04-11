@@ -5,7 +5,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     // check if user is authenticated
     if (!user) {
         // redirect to the login page
-        window.location.href = '../loginPage/login.html';
+        window.location.href = '../../index.html';
         console.log('You are not a user');
     }
 
@@ -114,9 +114,6 @@ function showNotification(element, message, displayTime) {
     if ($('.notification').length === 0) {
         let speed = 300;
         let notification = $(`<div class="notification">${message}</div>`);
-        if (message == 'Login Successful') {
-            notification.css('background-color', 'lightgreen');
-        }
         element.append(notification);
         notification.slideDown(speed);
         // timer for the removal of the notification

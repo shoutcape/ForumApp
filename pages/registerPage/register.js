@@ -16,7 +16,7 @@ registerForm.on('submit', function (e) {
 });
 
 loginLink.on('click', async function () {
-    changePage('../loginPage/login.html')
+    changePage('../../index.html')
 });
 
 async function authenticate(email, password, cpassword) {
@@ -29,7 +29,7 @@ async function authenticate(email, password, cpassword) {
         .createUserWithEmailAndPassword(email, password)
         .then(async () => {
             showNotification('New User Created, Loading Login Page', 2000)
-            changePage('../loginPage/login.html', 1000)
+            changePage('../../index.html', 1000)
         })
         //  error handling for failed attempts
         .catch((error) => {
