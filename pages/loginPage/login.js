@@ -29,11 +29,10 @@ async function authenticateLogin(email, password) {
         })
         .catch((error) => {
             let message = error.message
-            if (error.message.includes('LOGIN_CREDENTIALS')) {
+            if (error.message == ('Firebase: The supplied auth credential is incorrect, malformed or has expired. (auth/invalid-credential).')) {
                 message = 'Invalid Login Credentials'
-                // this will produce a POST 400 error because of firebase, No way to remove it currently
             }
-            showNotification(message, 2000);
+            showNotification(message, 3000);
         });
 }
 

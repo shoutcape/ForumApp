@@ -77,6 +77,7 @@
             rgba(118, 175, 187, 0.95) -19.03%,
             rgba(8, 33, 98, 0.95) 102.17%
         );
+    margin-bottom: 30px;
 }
 
 .context {
@@ -98,10 +99,12 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #newPostInput {
-    width: 400px;
+    width: 370px;
     height: 100px;
     resize: none;
 }
@@ -111,11 +114,13 @@ h1 {
     flex-direction: column;
     justify-content: start;
     align-items: start;
-    width: 800px;
+    max-width: 800px;
     padding: 10px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     text-align: start;
     background-color: white;
+    border-radius: 3px;
+    margin-bottom: 10px;
 }
 
 .text-container h5 {
@@ -135,6 +140,6 @@ html {
         rgba(32, 32, 32, 1) 0%,
         rgba(121, 121, 121, 1) 100%
     );
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh;
+    width: 100%;
 }
