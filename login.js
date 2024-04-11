@@ -1,4 +1,4 @@
-import firebase from '../../firebaseconfig.js';
+import firebase from './firebaseconfig.js';
 
 const loginForm = $('#loginForm');
 const registerLink = $('#registerLink');
