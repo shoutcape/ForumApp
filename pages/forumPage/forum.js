@@ -99,6 +99,9 @@ function showNotification(element, message, displayTime) {
     if ($('.notification').length === 0) {
         let speed = 300;
         let notification = $(`<div class="notification">${message}</div>`);
+        if (message.includes('removed')) {
+            notification.addClass('fixed')
+        }
         element.append(notification);
         notification.slideDown(speed);
         // timer for the removal of the notification
@@ -138,7 +141,7 @@ function createNewPost(
     if (creator == currentUser) {
         removeButton.show();
     }
-    removeButton.on('click', () => deletePost(newPost));
+    removeButton.on('click', () => deletePost(newPost, postId));
 
     let replyButton = newPost.find('.replyButton');
     replyButton.on('click', () =>
@@ -165,16 +168,21 @@ function createNewPost(
                         date.toLocaleDateString() +
                         ' ' +
                         date.toLocaleTimeString();
-                    createNewReply(newPost, creator, content, formattedDate);
+                    createNewReply(newPost, creator, content, formattedDate, postId);
                 });
             });
     }
     $('#userPosts').prepend(newPost);
 }
 
-function deletePost(currenPost) {
+function deletePost(currenPost, postId) {
     currenPost.css('visibility', 'hidden');
     currenPost.slideUp(500);
+
+    db.collection('posts').doc(postId).delete()
+        .then(() => {
+            showNotification($('html'), 'Post removed Successfully', 3000)
+        })
 }
 
 function showReplyWindow(postId, targetElement, user, formattedDate) {
@@ -195,7 +203,7 @@ function showReplyWindow(postId, targetElement, user, formattedDate) {
     replyWindow.find('#sendButton').on('click', function (event) {
         event.preventDefault();
         let replyContent = replyWindow.find('textarea')[0].value;
-        createNewReply(targetElement, user, replyContent, formattedDate);
+        createNewReply(targetElement, user, replyContent, formattedDate, postId);
 
         let docData = {
             username: user,
@@ -217,20 +225,30 @@ function showReplyWindow(postId, targetElement, user, formattedDate) {
     $('.overlay').append(replyWindow);
 }
 
-function createNewReply(targetElement, user, content, formattedDate) {
+function createNewReply(targetElement, user, content, formattedDate, postId) {
     let replyMessage = $(`
                     <div class="reply">
-                        <div class="actions">
-                            <span>Reply from user:</span>
-                            <span class="username">${user}</span>
-                            <button class="removeButton" id="removeButton" type="button" style="display: none;">Remove</button>
-                            <span>${formattedDate}</span>
+                        <div class="actions-buttonbar">
+                            <div class="actions">
+                                <span>Reply from user:</span>
+                                <span class="username">${user}</span>
+                                <span>${formattedDate}</span>
+                            </div>
+                            <div class="buttonBar">
+                                <button class="pure-button pure-button-active removeButton" id="removeButton" type="button" style="display: none;">Remove</button>
+                            </div>
                         </div>
                         <p>${content}</p>
                     </div>
                 `);
+                let currentUser = firebase.auth().currentUser.displayName;
+                let removeButton = replyMessage.find('.removeButton');
+                if (user == currentUser) {
+                    removeButton.show();
+                }
+                removeButton.on('click', () => deletePost(replyMessage, postId));
+
     targetElement.append(replyMessage);
-    console.log('replied');
 }
 
 loadUserPosts();
