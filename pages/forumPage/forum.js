@@ -58,56 +58,41 @@ firebase.auth().onAuthStateChanged(function (user) {
 let newPostForm = $('#newPostForm');
 newPostForm.on('submit', function (event) {
     event.preventDefault();
-    let textContent = $('#newPostInput')[0].value
-    let user = firebase.auth().currentUser
-    let username = user.displayName
-    let newPost = $(`
-    <div class="text-container">
-        <h5>${username}</h5>
-        <p>${textContent}</p>
-        <button class="replyButton" id="replyButton" type="button">Reply</button>
-    </div>
-            `);
-    $('#userPosts').prepend(newPost)
+    let textContent = $('#newPostInput')[0].value;
+    let user = firebase.auth().currentUser;
+    let username = user.displayName;
+    let date = new Date();
+    let formattedDate =
+        date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+    createNewPost(null, username, formattedDate, textContent, true);
     let docData = {
         username: username,
         content: textContent,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    }
-
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+    $('#newPostInput')[0].value = '';
     // todo figure out best db structure for data
-    db.collection('posts').add(docData)
+    db.collection('posts').add(docData);
 });
 
 function loadUserPosts() {
-    db.collection("posts").orderBy('createdAt').get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            let fields = doc._delegate._document.data.value.mapValue.fields
-            let creator = fields.username.stringValue 
-            let content = fields.content.stringValue
-            let date = fields.createdAt.timestampValue
-            // format the date properly
-            date = new Date(date)
-            let formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-            let newPost = $(`
-            <div class="text-container">
-                <h5>${creator}</h5>
-                <p>${content}</p>
-                <div class="actions">
-                <button class="replyButton" id="replyButton" type="button">Reply</button>
-                <button class="removeButton" id="removeButton" type="button" style="display: none;">Remove</button>
-                <span>${formattedDate}</span>
-                </div>
-            </div>
-                    `);
-            if (creator == firebase.auth().currentUser.displayName) {
-                newPost.find('.removeButton').show()
-            }
-            $('#userPosts').prepend(newPost)
-                // console.log(information)
-            // })
-        })
-    })
+    db.collection('posts')
+        .orderBy('createdAt')
+        .get()
+        .then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                let postId = doc.id;
+                let data = doc._delegate._document.data.value.mapValue.fields;
+                let creator = data.username.stringValue;
+                let content = data.content.stringValue;
+                let date = data.createdAt.timestampValue;
+                // format the date properly
+                date = new Date(date);
+                let formattedDate =
+                    date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                createNewPost(postId, creator, formattedDate, content);
+            });
+        });
 }
 
 function showNotification(element, message, displayTime) {
@@ -125,4 +110,127 @@ function showNotification(element, message, displayTime) {
     }
 }
 
-loadUserPosts()
+function createNewPost(
+    postId,
+    creator,
+    formattedDate,
+    content,
+    completelyNewPost = false
+) {
+    let newPost = $(`
+            <div class="text-container">
+                <div class="actions-buttonbar">
+                    <div class="actions">
+                        <span>Post from user:</span>
+                        <span class="username">${creator}</span>
+                        <span>${formattedDate}</span>
+                    </div>
+                    <div class="buttonBar">
+                        <button class="pure-button pure-button-active replyButton" id="replyButton" type="button">Reply</button>
+                        <button class="pure-button pure-button-active removeButton" id="removeButton" type="button" style="display: none;">Remove</button>
+                    </div>
+                </div>
+                <p>${content}</p>
+            </div>
+                    `);
+    let currentUser = firebase.auth().currentUser.displayName;
+    let removeButton = newPost.find('.removeButton');
+    if (creator == currentUser) {
+        removeButton.show();
+    }
+    removeButton.on('click', () => deletePost(newPost));
+
+    let replyButton = newPost.find('.replyButton');
+    replyButton.on('click', () =>
+        showReplyWindow(postId, newPost, currentUser, formattedDate)
+    );
+
+    // get the replies for the posts
+    if (!completelyNewPost) {
+        db.collection('posts')
+            .doc(postId)
+            .collection('replies')
+            .orderBy('createdAt')
+            .get()
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    let data =
+                        doc._delegate._document.data.value.mapValue.fields;
+                    let creator = data.username.stringValue;
+                    let content = data.content.stringValue;
+                    let date = data.createdAt.timestampValue;
+                    // format the date properly
+                    date = new Date(date);
+                    let formattedDate =
+                        date.toLocaleDateString() +
+                        ' ' +
+                        date.toLocaleTimeString();
+                    createNewReply(newPost, creator, content, formattedDate);
+                });
+            });
+    }
+    $('#userPosts').prepend(newPost);
+}
+
+function deletePost(currenPost) {
+    currenPost.css('visibility', 'hidden');
+    currenPost.slideUp(500);
+}
+
+function showReplyWindow(postId, targetElement, user, formattedDate) {
+    $('.overlay').show();
+    let replyWindow = $(`
+                <div class="pure-form pure-form-stacked replyWindow">
+                    <h1>Reply</h1>
+                    <p>here you can write your reply.</p>
+                    <form class="replyForm">
+                        <textarea type="text" name="replyInput" id="replyInput"></textarea>
+                        <div>
+                            <button class="pure-button" id="sendButton" type="submit">Send</button>
+                            <button class="pure-button" id="cancelButton" type="submit">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+    `);
+    replyWindow.find('#sendButton').on('click', function (event) {
+        event.preventDefault();
+        let replyContent = replyWindow.find('textarea')[0].value;
+        createNewReply(targetElement, user, replyContent, formattedDate);
+
+        let docData = {
+            username: user,
+            content: replyContent,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        };
+
+        db.collection('posts').doc(postId).collection('replies').add(docData);
+        $('.overlay').fadeOut();
+        replyWindow.remove();
+    });
+
+    replyWindow.find('#cancelButton').on('click', function (event) {
+        event.preventDefault();
+        $('.overlay').fadeOut();
+        replyWindow.remove();
+    });
+
+    $('.overlay').append(replyWindow);
+}
+
+function createNewReply(targetElement, user, content, formattedDate) {
+    let replyMessage = $(`
+                    <div class="reply">
+                        <div class="actions">
+                            <span>Reply from user:</span>
+                            <span class="username">${user}</span>
+                            <button class="removeButton" id="removeButton" type="button" style="display: none;">Remove</button>
+                            <span>${formattedDate}</span>
+                        </div>
+                        <p>${content}</p>
+                    </div>
+                `);
+    targetElement.append(replyMessage);
+    console.log('replied');
+}
+
+loadUserPosts();
