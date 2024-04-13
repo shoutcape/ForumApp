@@ -6,7 +6,6 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (!user) {
         // redirect to the login page
         window.location.href = '../../index.html';
-        console.log('You are not a user');
     }
 
     // check if user has created a username
@@ -55,16 +54,22 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
+
 let newPostForm = $('#newPostForm');
 newPostForm.on('submit', function (event) {
     event.preventDefault();
-    let textContent = $('#newPostInput')[0].value;
+    let textContent = $('#newPostInput')[0].value.trim();
+    if (!textContent) {
+        showNotification($('html'), 'Empty posts not allowed :)', 3000)
+        return
+    }
     let user = firebase.auth().currentUser;
     let username = user.displayName;
     let date = new Date();
     let formattedDate =
         date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-    createNewPost(null, username, formattedDate, textContent, true);
+    const newPost = db.collection('posts').doc()
+    createNewPost(newPost.id, username, formattedDate, textContent, true);
     let docData = {
         username: username,
         content: textContent,
@@ -72,8 +77,16 @@ newPostForm.on('submit', function (event) {
     };
     $('#newPostInput')[0].value = '';
     // todo figure out best db structure for data
-    db.collection('posts').add(docData);
+    db.collection('posts').doc(newPost.id).set(docData);
+    showNotification($('html'), 'New Post Created', 3000)
 });
+
+$('#newPostInput').on('keydown', function(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault()
+        newPostForm.submit()
+    }
+})
 
 function loadUserPosts() {
     db.collection('posts')
@@ -99,11 +112,8 @@ function showNotification(element, message, displayTime) {
     if ($('.notification').length === 0) {
         let speed = 300;
         let notification = $(`<div class="notification">${message}</div>`);
-        if (message.includes('removed')) {
-            notification.addClass('fixed')
-        }
         element.append(notification);
-        notification.slideDown(speed);
+        notification.fadeIn(speed);
         // timer for the removal of the notification
         setTimeout(() => {
             notification.slideUp(speed, function () {
@@ -122,17 +132,17 @@ function createNewPost(
 ) {
     let newPost = $(`
             <div class="text-container">
-                <div class="actions-buttonbar">
-                    <div class="actions">
+                    <div class="infoBar">
+                        <div>
                         <span>Post from user:</span>
                         <span class="username">${creator}</span>
                         <span>${formattedDate}</span>
-                    </div>
-                    <div class="buttonBar">
+                        </div>
+                        <div>
                         <button class="pure-button pure-button-active replyButton" id="replyButton" type="button">Reply</button>
                         <button class="pure-button pure-button-active removeButton" id="removeButton" type="button" style="display: none;">Remove</button>
+                        </div>
                     </div>
-                </div>
                 <p>${content}</p>
             </div>
                     `);
@@ -168,21 +178,31 @@ function createNewPost(
                         date.toLocaleDateString() +
                         ' ' +
                         date.toLocaleTimeString();
-                    createNewReply(newPost, creator, content, formattedDate, postId);
+                    createNewReply(newPost, creator, content, formattedDate, postId, doc.id);
                 });
             });
-    }
+    } 
     $('#userPosts').prepend(newPost);
 }
 
 function deletePost(currenPost, postId) {
-    currenPost.css('visibility', 'hidden');
-    currenPost.slideUp(500);
-
     db.collection('posts').doc(postId).delete()
         .then(() => {
             showNotification($('html'), 'Post removed Successfully', 3000)
         })
+
+    currenPost.css('visibility', 'hidden');
+    currenPost.slideUp(500);
+}
+
+function deleteReply(postId, replyId) {
+    db.collection('posts').doc(postId).collection('replies').doc(replyId).delete()
+        .then(() => {
+            showNotification($('html'), 'Reply removed Successfully', 3000)
+        })
+        .catch((error) => {
+            console.error("Error removing reply: ", error);
+        });
 }
 
 function showReplyWindow(postId, targetElement, user, formattedDate) {
@@ -200,20 +220,22 @@ function showReplyWindow(postId, targetElement, user, formattedDate) {
                     </form>
                 </div>
     `);
+
     replyWindow.find('#sendButton').on('click', function (event) {
         event.preventDefault();
         let replyContent = replyWindow.find('textarea')[0].value;
-        createNewReply(targetElement, user, replyContent, formattedDate, postId);
+        const newReply = db.collection('posts').doc(postId).collection('replies').doc()
+        createNewReply(targetElement, user, replyContent, formattedDate, postId, newReply.id);
 
         let docData = {
             username: user,
             content: replyContent,
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         };
-
-        db.collection('posts').doc(postId).collection('replies').add(docData);
+        db.collection('posts').doc(postId).collection('replies').doc(newReply.id).set(docData);
         $('.overlay').fadeOut();
         replyWindow.remove();
+        showNotification($('html'),'New Reply Created', 3000)
     });
 
     replyWindow.find('#cancelButton').on('click', function (event) {
@@ -225,19 +247,19 @@ function showReplyWindow(postId, targetElement, user, formattedDate) {
     $('.overlay').append(replyWindow);
 }
 
-function createNewReply(targetElement, user, content, formattedDate, postId) {
+function createNewReply(targetElement, user, content, formattedDate, postId, replyId) {
     let replyMessage = $(`
                     <div class="reply">
-                        <div class="actions-buttonbar">
-                            <div class="actions">
-                                <span>Reply from user:</span>
-                                <span class="username">${user}</span>
-                                <span>${formattedDate}</span>
+                            <div class="infoBar">
+                                <div>
+                                    <span>Reply from user:</span>
+                                    <span class="username">${user}</span>
+                                    <span>${formattedDate}</span>
+                                </div>
+                                <div>
+                                    <button class="pure-button pure-button-active removeButton" id="removeButton" type="button" style="display: none;">Remove</button>
+                                </div>
                             </div>
-                            <div class="buttonBar">
-                                <button class="pure-button pure-button-active removeButton" id="removeButton" type="button" style="display: none;">Remove</button>
-                            </div>
-                        </div>
                         <p>${content}</p>
                     </div>
                 `);
@@ -246,7 +268,11 @@ function createNewReply(targetElement, user, content, formattedDate, postId) {
                 if (user == currentUser) {
                     removeButton.show();
                 }
-                removeButton.on('click', () => deletePost(replyMessage, postId));
+                removeButton.on('click', function() {
+                    deleteReply(postId, replyId);
+                    replyMessage.css('visibility', 'hidden');
+                    replyMessage.slideUp(500);
+                })
 
     targetElement.append(replyMessage);
 }

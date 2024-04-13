@@ -2,7 +2,6 @@
     display: none;
     margin: auto;
     margin-top: 100px;
-    background-color: lightblue;
     border-radius: 20px;
     background-image: linear-gradient(
             111.15deg,
@@ -38,12 +37,17 @@
 .notification {
     display: none;
     border-radius: 10px;
-    background-color: rgb(156, 23, 0);
+    background-color: rgb(197, 101, 84);
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
     padding: 10px;
     margin:auto;
     max-width: 300px;
     text-align: center;
+    position: fixed;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
 }
 
 .overlay {
@@ -62,24 +66,9 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin: auto;
-    margin-top: 30px;
     padding: 20px;
-    background-color: lightblue;
-    max-width: 900px;
     text-align: center;
     border-radius: 20px;
-    background-image: linear-gradient(
-            111.15deg,
-            rgba(0, 96, 240, 0.486) 0%,
-            rgba(0, 4, 10, 0.6) 92.78%
-        ),
-        linear-gradient(
-            112.99deg,
-            rgba(118, 175, 187, 0.95) -19.03%,
-            rgba(8, 33, 98, 0.95) 102.17%
-        );
-    margin-bottom: 30px;
 }
 
 .context {
@@ -109,13 +98,28 @@ h1 {
     width: 370px;
     height: 100px;
     resize: none;
+    text-align: start;
+    overflow: auto;
+    box-sizing: border-box;
+}
+
+#removeButton {
+    background-color: rgb(237, 94, 104);
+}
+
+#replyButton {
+    background-color: rgb(29, 126, 181);
+}
+
+#userPosts {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .text-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
+    width: 80%;
+    max-width: 1000px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
     text-align: start;
     padding: 10px;
@@ -124,23 +128,6 @@ h1 {
     margin-bottom: 10px;
 }
 
-.actions-buttonbar {
-    display: flex;
-}
-
-.buttonBar {
-    display: flex;
-}
-
-.buttonBar button {
-    display: flex;
-    border: none;
-    background-color: transparent;
-    box-shadow: none;
-    padding: 5px;
-    padding-top: 0px;
-    justify-content: center;
-}
 
 .text-container h5 {
     font-size: 1.3em;
@@ -156,8 +143,8 @@ h1 {
 .reply {
     display: flex;
     flex-direction: column;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
-    background-color: white;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 2px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    background-color: rgb(243, 243, 243);
     border-radius: 3px;
     margin-top: 10px;
     padding: 10px;
@@ -171,9 +158,14 @@ h1 {
     font-weight: 600;
 }
 
-.actions {
-    width: fit-content;
+.infoBar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background-color: rgb(243, 243, 243);
     padding: 10px;
+    border-radius: 3px 3px 0px 0px;
     margin-top: -10px;
     margin-left:-10px;
     box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
@@ -206,21 +198,20 @@ h1 {
     color: white;
 }
 
-.fixed {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
-}
 
 
 html {
-    background: radial-gradient(
-        circle,
-        rgba(32, 32, 32, 1) 0%,
-        rgba(121, 121, 121, 1) 100%
-    );
-    min-height: 100vh;
-    width: 100%;
+    background-repeat: no-repeat;
+    background-image: linear-gradient(
+            111.15deg,
+            rgba(0, 96, 240, 0.486) 0%,
+            rgba(0, 4, 10, 0.6) 92.78%
+        ),
+        linear-gradient(
+            112.99deg,
+            rgba(118, 175, 187, 0.95) -19.03%,
+            rgba(8, 33, 98, 0.95) 102.17%
+        );
+        min-height: 100vh;
+        width: 100vw;
 }
