@@ -37,7 +37,7 @@
 .notification {
     display: none;
     border-radius: 10px;
-    background-color: rgb(197, 101, 84);
+    background-color: lightgreen;
     box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
     padding: 10px;
     margin:auto;
@@ -48,17 +48,20 @@
     left: 0;
     right: 0;
     margin: auto;
+    z-index: 2;
+}
+
+.errorNotification {
+    background-color: rgb(197, 101, 84);
 }
 
 .overlay {
     position: fixed;
-    top: 0;
-    left: 0;
     width: 100vw;
     height: 100vh;
     backdrop-filter: blur(10px);
     /* on top of everything */
-    z-index: 999;
+    z-index: 2;
 }
 
 
@@ -95,20 +98,22 @@ h1 {
 }
 
 #newPostInput {
-    width: 370px;
+    width: 400px;
     height: 100px;
     resize: none;
     text-align: start;
-    overflow: auto;
-    box-sizing: border-box;
 }
+
 
 #removeButton {
     background-color: rgb(237, 94, 104);
+
 }
 
+
+
 #replyButton {
-    background-color: rgb(29, 126, 181);
+    background-color: rgb(39, 139, 197);
 }
 
 #userPosts {
@@ -173,9 +178,13 @@ h1 {
 
 
 .replyWindow {
-    margin: auto;
-    margin-top: 300px;
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     max-width: 600px;
+    display: flex;
+    flex-direction: column;
     background-image: linear-gradient(
             111.15deg,
             rgba(0, 96, 240, 0.486) 0%,
@@ -187,11 +196,15 @@ h1 {
             rgba(8, 33, 98, 0.95) 102.17%
         );
     border-radius: 20px;
+    margin-top: 30px;
+    padding: 20px 100px 20px 100px;
+    z-index: 3;
 }
 
 .replyForm textarea{
     resize: none;
-    width: 100%;
+    width: 300px;
+    height: 75px;
 }
 
 .replyWindow h1, .replyWindow p {
@@ -213,5 +226,44 @@ html {
             rgba(8, 33, 98, 0.95) 102.17%
         );
         min-height: 100vh;
-        width: 100vw;
+        width: 100%;
+        overflow: auto;
+}
+
+
+@media (max-width: 643px) {
+    #newPostInput {
+        width: 350px;
+    }
+
+    .replyWindow {
+        width: auto;
+    }
+
+    .replyForm textarea {
+        width: 200px;
+        height: 50px;
+    }
+
+    .actionButtons {
+        display: flex;
+        flex-direction: column;
+        align-items: end;
+    }
+
+    #replyButton {
+        width: 100%;
+    }
+
+    #removeButton {
+        margin-top: 4px;
+        width: 100%;
+    }
+
+}
+
+@media (max-width: 400px) {
+    #newPostInput {
+        width: 250px;
+    }
 }
