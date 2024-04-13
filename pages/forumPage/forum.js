@@ -213,7 +213,6 @@ function deletePost(currenPost, postId) {
                     .doc(doc.id)
                     .delete()
                     .then(() => {
-                        console.log('deleted reply');
                     });
             });
         });
