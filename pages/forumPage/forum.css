@@ -211,6 +211,9 @@ h1 {
     color: white;
 }
 
+.pure-button {
+    vertical-align:0%;
+}
 
 
 html {
