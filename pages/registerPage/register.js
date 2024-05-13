@@ -1,4 +1,6 @@
 import firebase from '../../firebaseconfig.js';
+import { showNotification } from '../../htmlElements/alertNotification.js';
+import { changePage } from '../../utils/changePage.js';
 
 const registerForm = $('#registerForm');
 const loginLink = $('#loginLink');
@@ -16,7 +18,7 @@ registerForm.on('submit', function (e) {
 });
 
 loginLink.on('click', async function () {
-    changePage('../../index.html')
+    changePage(container, '../../index.html')
 });
 
 async function authenticate(email, password, cpassword) {
@@ -28,46 +30,11 @@ async function authenticate(email, password, cpassword) {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(async () => {
-            showNotification('New User Created, Loading Login Page', 2000)
-            changePage('../../index.html', 1000)
+            showNotification(container,'New User Created, Loading Login Page', 2000)
+            changePage(container, '../../index.html', 1000)
         })
         //  error handling for failed attempts
         .catch((error) => {
-            showNotification(error.message, 2000);
+            showNotification(container, error.message, 2000);
         });
-}
-
-/* 
-the async/await function needs a promise so we return a promise of the slideUp function, 
-this creates a wait for the animation to complete
-*/
-function containerSlideUp(element, duration) {
-    return new Promise((resolve) => {
-        element.slideUp(duration, resolve);
-    });
-}
-
-function showNotification(message, displayTime) {
-    if ($('.notification').length === 0) {
-        let speed = 300;
-        let notification = $(`<div class="notification">${message}</div>`);
-        if (message == 'New User Created, Loading Login Page') {
-           notification.css('background-color', 'lightgreen') 
-        }
-        container.append(notification);
-        notification.slideDown(speed);
-        // timer for the removal of the notification
-        setTimeout(() => {
-            notification.slideUp(speed, function () {
-                notification.remove();
-            });
-        }, displayTime);
-    }
-}
-
-function changePage(destination, delay=0) {
-    setTimeout(async () => {
-        await containerSlideUp(container, 300)
-        window.location.href = destination
-    }, delay)
 }

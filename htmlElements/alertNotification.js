@@ -1,9 +1,12 @@
 export function showNotification(element, message, displayTime) {
+    // prevent duplicate notifications
     if ($('.notification').length === 0) {
         let speed = 300
         let style
 
-        if (message.includes('Empty')) {
+        // list of words to trigger style change in notification
+        let errorWords = ['empty', 'error', 'invalid'];
+        if (errorWords.some(word => message.toLowerCase().includes(word))) {
             style = 'errorNotification'
         }
 

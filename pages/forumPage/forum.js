@@ -1,5 +1,5 @@
 import firebase from '../../firebaseconfig.js'
-let db = firebase.firestore()
+const db = firebase.firestore()
 import { createUsernameWindow } from '../../htmlElements/usernamewindow.js'
 import { showNotification } from '../../htmlElements/alertNotification.js'
 import { createNewPost } from '../../htmlElements/newPost.js'
@@ -62,6 +62,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 })
 
+// define post creation textArea
 let newPostForm = $('#newPostForm')
 newPostForm.on('submit', function (event) {
     event.preventDefault()
@@ -92,6 +93,15 @@ $('#newPostInput').on('keydown', function (event) {
         event.preventDefault()
         newPostForm.submit()
     }
+})
+
+$('.signout').on('click', function(event) {
+    event.preventDefault()
+    console.log('toimii')
+    firebase.auth().signOut().then(() => {
+        window.location.href = '../../index.html'
+        showNotification($('html'), 'Signed Out', 2000)
+    })
 })
 
 function loadUserPosts() {

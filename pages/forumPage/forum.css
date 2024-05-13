@@ -28,11 +28,16 @@
     text-align: center;
     display: grid;
     justify-content: center;
-}
-
-.pure-form input {
-    text-align: center;
-    font-size: large;
+    input {
+        text-align: center;
+        font-size: large;
+    }
+    button {
+        margin: auto;
+        background: rgb(66, 184, 221);
+        margin-bottom: 20px;
+        margin-top: 5px;
+    }
 }
 
 .notification {
@@ -67,6 +72,13 @@
     z-index: 2;
 }
 
+.signout {
+    position: absolute;
+    display: relative;
+    margin: 50px 0px 0px 50px;
+    width: 50px;
+}
+
 .main-container {
     display: flex;
     flex-direction: column;
@@ -76,19 +88,12 @@
     border-radius: 20px;
 }
 
-.context {
+.text {
     color: white;
 }
 
 h1 {
     font-size: 3em;
-}
-
-.pure-form button {
-    margin: auto;
-    background: rgb(66, 184, 221);
-    margin-bottom: 20px;
-    margin-top: 5px;
 }
 
 #newPostButton {
@@ -130,17 +135,15 @@ h1 {
     background-color: white;
     border-radius: 3px;
     margin-bottom: 10px;
-}
-
-.text-container h5 {
-    font-size: 1.3em;
-    margin: 0px;
-}
-
-.text-container p {
-    margin-top: 20px;
-    margin-left: 40px;
-    word-break: break-all;
+    h5 {
+        font-size: 1.3em;
+        margin: 0px;
+    }
+    p {
+        margin-top: 20px;
+        margin-left: 40px;
+        word-break: break-all;
+    }
 }
 
 .reply {
