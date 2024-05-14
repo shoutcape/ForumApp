@@ -63,9 +63,9 @@
 }
 
 .signout {
+    padding-top: 50px;
+    padding-left: 50px;
     width: 50px;
-    margin-top: 50px;
-    margin-left: 50px;
     svg {
         transition: transform 0.3s ease;
     }
