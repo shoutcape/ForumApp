@@ -53,8 +53,16 @@ function deleteReply(postId, replyId) {
         })
 }
 
+// prevent user from navigating the page with tab while using the replywindow
+let preventNavigation = (event) => {
+    if (event.keyCode === 9) {
+        event.preventDefault()
+    }
+}
+
 export function showReplyWindow(postId, targetElement, user, formattedDate) {
     $('.overlay').show()
+    document.addEventListener('keydown', preventNavigation)
     let replyWindow = $(`
                 <div class="pure-form pure-form-stacked replyWindow">
                     <h1>Reply</h1>

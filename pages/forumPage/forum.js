@@ -4,9 +4,6 @@ import { createUsernameWindow } from '../../htmlElements/usernamewindow.js'
 import { showNotification } from '../../htmlElements/alertNotification.js'
 import { createNewPost } from '../../htmlElements/newPost.js'
 
-function currentUser() {
-    return firebase.auth().currentUser
-}
 
 firebase.auth().onAuthStateChanged(function (user) {
     // check if user is authenticated
@@ -35,8 +32,8 @@ firebase.auth().onAuthStateChanged(function (user) {
                 db.collection('usernames')
                     .doc(username)
                     .get()
-                    .then((usernameDoc) => {
-                        if (usernameDoc.exists) {
+                    .then((doc) => {
+                        if (doc.exists) {
                             showNotification(
                                 usernameWindow,
                                 'Username Already Taken',
@@ -44,7 +41,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                             )
                         } else {
                             db.collection('usernames').doc(username).set({
-                                userId: currentUser.uid,
+                                userId: user.uid,
                             })
                             user.updateProfile({
                                 displayName: username,
@@ -59,6 +56,7 @@ firebase.auth().onAuthStateChanged(function (user) {
     } else {
         $('.overlay').fadeOut(300)
         $('#welcomeHeading').append(`<br>${user.displayName}`)
+        loadUserPosts()
     }
 })
 
@@ -71,7 +69,8 @@ newPostForm.on('submit', function (event) {
         showNotification($('html'), 'Empty posts not allowed :)', 2000)
         return
     }
-    let username = currentUser().displayName
+
+    let username = firebase.auth().currentUser.displayName
     let date = new Date()
     let formattedDate =
         date.toLocaleDateString() + ' ' + date.toLocaleTimeString()
@@ -124,4 +123,3 @@ function loadUserPosts() {
         })
 }
 
-loadUserPosts()
