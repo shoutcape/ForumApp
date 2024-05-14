@@ -2,6 +2,12 @@
 
 This is a simple forum application built with JavaScript and Firebase.
 
+
+## Photos
+
+![image](https://github.com/shoutcape/ForumApp/assets/74509593/aac5c844-94e6-46f2-a3b4-504d2ce9f138)
+
+
 ## Features
 
 - User authentication with Firebase Auth
