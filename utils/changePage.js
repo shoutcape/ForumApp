@@ -1,6 +1,6 @@
 
 
-// add delay if you want to show user a message before moving on
+// change page animation
 export function changePage(element, destination, delay=0) {
     setTimeout(async () => {
         await containerSlideUp(element, 300)
@@ -8,10 +8,7 @@ export function changePage(element, destination, delay=0) {
     }, delay)
 }
 
-/* 
-the async/await authenticateLogin function needs a promise so we return a promise of a slideUp function, 
-this creates a wait for the animation
-*/
+// function that returns a promise so the program will wait for the animation to finish
 function containerSlideUp(element, duration) {
     return new Promise((resolve) => {
         element.slideUp(duration, resolve);

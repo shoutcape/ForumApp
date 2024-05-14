@@ -77,6 +77,14 @@
     display: relative;
     margin: 50px 0px 0px 50px;
     width: 50px;
+    svg {
+        transition: transform 0.3s ease;
+    }
+    svg:hover {
+        cursor: pointer;
+        transition: transform 0.3s ease;
+        transform: scale(1.2);
+    }
 }
 
 .main-container {

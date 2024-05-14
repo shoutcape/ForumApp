@@ -26,7 +26,7 @@ async function authenticateLogin(email, password) {
         .signInWithEmailAndPassword(email, password)
         .then(async () => {
             showNotification(container,'Login Successful', 2000)
-            changePage('./pages/forumPage/forum.html', 1000)
+            changePage(container, './pages/forumPage/forum.html', 1000)
         })
         .catch((error) => {
             let message = error.message
