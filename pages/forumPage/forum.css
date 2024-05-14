@@ -184,16 +184,8 @@ h1 {
     max-width: 600px;
     display: flex;
     flex-direction: column;
-    background-image: linear-gradient(
-            111.15deg,
-            rgba(0, 96, 240, 0.486) 0%,
-            rgba(0, 4, 10, 0.6) 92.78%
-        ),
-        linear-gradient(
-            112.99deg,
-            rgba(118, 175, 187, 0.95) -19.03%,
-            rgba(8, 33, 98, 0.95) 102.17%
-        );
+    background-color: rgb(12, 31, 59);
+    border: 2px solid white;
     border-radius: 20px;
     margin-top: 30px;
     padding: 20px 100px 20px 100px;
@@ -228,6 +220,8 @@ html, body {
     min-height: 100vh;
     min-width: 100vw;
     z-index: -1;
+    overflow-y: scroll;
+    overflow-x: hidden;
     background-color: rgb(12, 31, 59);
 }
 
