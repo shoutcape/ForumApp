@@ -5,7 +5,7 @@ export function showNotification(element, message, displayTime) {
         let style
 
         // list of words to trigger style change in notification
-        let errorWords = ['empty', 'error', 'invalid', 'already'];
+        let errorWords = ['empty', 'error', 'invalid', 'already', 'match'];
         if (errorWords.some(word => message.toLowerCase().includes(word))) {
             style = 'errorNotification'
         }
