@@ -50,6 +50,7 @@ firebase.auth().onAuthStateChanged(function (user) {
                                 $('.overlay').fadeOut()
                             })
                         }
+                        loadUserPosts()
                     })
             }
         })
