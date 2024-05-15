@@ -1,14 +1,9 @@
 
-#bigPoly {
-    /* animation: fadeInOut 2s infinite; */
-    animation: float 15s infinite ease-in-out;
-    animation-timeline: auto;
-}
+/* loginpage animations */
+#bigPoly {animation: float 15s infinite ease-in-out;}
+#cornerPiece {animation: float 10s infinite ease-in-out;}
 
-#cornerPiece {
-    animation: float 10s infinite ease-in-out;
-}
-
+/* forumpage svg animations */
  #p1 {animation: rotate 1s 1 forwards, float 30s infinite ease-in-out 5s;}
  #p2 {animation: rotate 2s 1 forwards, float 21s infinite ease-in-out 5s;}
  #p3 {animation: rotate 3s 1 forwards, float 33s infinite ease-in-out 5s;}
@@ -19,12 +14,6 @@
  #p8 {animation: rotate 4s 1 forwards, float 25s infinite ease-in-out 5s;}
  #p9 {animation: rotate 5s 1 forwards, float 27s infinite ease-in-out 5s;}
 #p10 {animation: rotate 1s 1 forwards, float 19s infinite ease-in-out 5s;}
-
-#p1, #p2, #p3, #p4, #p5, #p6, #p7, #p8, #p9, #p10, #bigPoly, #cornerPiece {
-    will-change: transform;
-    pointer-events: none;
-}
-
 
 @keyframes float {
     0% {transform: translate3d(0, 0, 0) rotate(0deg);}
