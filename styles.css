@@ -2,11 +2,11 @@
     display: none;
     margin: auto;
     position: relative;
-    top: 100px;
+    top: 20rem;
     background-color: rgba(255, 255, 255, 0.178);
     border: 2px solid white;
     border-radius: 20px;
-    max-width: 400px;
+    max-width: 30rem;
     padding-bottom: 20px;
 }
 
@@ -49,11 +49,10 @@ a {
     margin: auto;
     max-width: 300px;
     text-align: center;
-    position: fixed;
-    bottom: 10px;
+    position: absolute;
     left: 0;
     right: 0;
-    margin: auto;
+    bottom: -80px;
     z-index: 2;
 }
 
