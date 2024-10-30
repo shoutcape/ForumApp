@@ -86,21 +86,23 @@ export function showReplyWindow(postId, targetElement, user, formattedDate) {
         }
     })
 
-    replyForm.on('submit', function (event) {
+    replyForm.on('submit', async function (event) {
         event.preventDefault()
         let replyContent = replyWindow.find('textarea')[0].value.trim()
         if (!replyContent) {
             showNotification($('html'), 'Empty replies not allowed :)', 3000)
             return
         }
+        const currentUser = await firebase.auth().currentUser.displayName
         const newReply = db
             .collection('posts')
             .doc(postId)
             .collection('replies')
             .doc()
+
         createNewReply(
             targetElement,
-            user,
+            currentUser,
             replyContent,
             formattedDate,
             postId,
